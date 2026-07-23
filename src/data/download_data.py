@@ -1,11 +1,28 @@
 import yfinance as yf
+import os
 
-print("Downloading Apple stock data...")
+# Create data folder if it doesn't exist
+os.makedirs("data", exist_ok=True)
 
-stock = yf.download("AAPL", period="1mo")
+# Dictionary of stocks
+stocks = {
+    "apple": "AAPL",
+    "tesla": "TSLA",
+    "microsoft": "MSFT",
+    "amazon": "AMZN",
+    "google": "GOOGL"
+}
 
-print(stock)
+# Download each stock
+for name, ticker in stocks.items():
+    print(f"Downloading {name.title()} ({ticker})...")
 
-stock.to_csv("data/apple_stock.csv")
+    df = yf.download(ticker, period="1mo")
 
-print("Data saved successfully!")
+    filename = f"data/{name}_stock.csv"
+
+    df.to_csv(filename)
+
+    print(f"✅ Saved: {filename}")
+
+print("\nAll stock data downloaded successfully!")
